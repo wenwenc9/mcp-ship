@@ -1,0 +1,497 @@
+app:
+  description: ''
+  icon: octagonal_sign
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 非MCP-船期查询
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/volcengine_maas:0.0.9@89e719fd718aaf97165b1833202e8db8a4e553cf7291291cc376e4b50245f1cd
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: question-classifier
+      id: 1743669326678-source-1743669341637-target
+      source: '1743669326678'
+      sourceHandle: source
+      target: '1743669341637'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: answer
+      id: 1743669341637-2-1743669944941-target
+      source: '1743669341637'
+      sourceHandle: '2'
+      target: '1743669944941'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: parameter-extractor
+      id: 1743669341637-1-1743671444449-target
+      source: '1743669341637'
+      sourceHandle: '1'
+      target: '1743671444449'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: http-request
+      id: 1743671444449-source-1743671737474-target
+      source: '1743671444449'
+      sourceHandle: source
+      target: '1743671737474'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: if-else
+      id: 1743671737474-source-1743672862134-target
+      source: '1743671737474'
+      sourceHandle: source
+      target: '1743672862134'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1743672862134-false-1743674077541-target
+      source: '1743672862134'
+      sourceHandle: 'false'
+      target: '1743674077541'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: answer
+      id: 1743674271615-source-1743674299683-target
+      source: '1743674271615'
+      sourceHandle: source
+      target: '1743674299683'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: 1743672862134-true-1743674441721-target
+      source: '1743672862134'
+      sourceHandle: 'true'
+      target: '1743674441721'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 1743674441721-source-1743674271615-target
+      source: '1743674441721'
+      sourceHandle: source
+      target: '1743674271615'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables: []
+      height: 53
+      id: '1743669326678'
+      position:
+        x: 34.907045714902154
+        y: 217.43873852542993
+      positionAbsolute:
+        x: 34.907045714902154
+        y: 217.43873852542993
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        classes:
+        - id: '1'
+          name: 船期查询
+        - id: '2'
+          name: 普通问答
+        desc: ''
+        instruction: '根据用户输入进行以下意图分类：
+
+
+          #意图
+
+          船期查询：一般输入为；查询xxx船期、xxx地点到xxx地点的船期
+
+          其他：与以上意图不相干的归类至此。
+
+          '
+        instructions: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-v3
+          provider: langgenius/volcengine_maas/volcengine_maas
+        query_variable_selector:
+        - '1743669326678'
+        - sys.query
+        selected: false
+        title: 问题分类器
+        topics: []
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 171
+      id: '1743669341637'
+      position:
+        x: 319.9330786149614
+        y: 217.43873852542993
+      positionAbsolute:
+        x: 319.9330786149614
+        y: 217.43873852542993
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '其它问题
+
+          '
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 101
+      id: '1743669944941'
+      position:
+        x: 579.7955575751038
+        y: 376.9108664904803
+      positionAbsolute:
+        x: 579.7955575751038
+        y: 376.9108664904803
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: 提取港口地点pol，pod
+        instruction: '你是一个海运物流专家，能够根据用户输入提取相应的海运港口地点的名词，下面是一些few-shot案例：
+
+          从A到B
+
+          起始港xxx到目的港xxx
+
+          xxx,xxx'
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: 豆包
+          provider: langgenius/volcengine_maas/volcengine_maas
+        parameters:
+        - description: 起始港
+          name: pol
+          required: true
+          type: string
+        - description: 目的港
+          name: pod
+          required: true
+          type: string
+        query:
+        - sys
+        - query
+        reasoning_mode: prompt
+        selected: false
+        title: 参数提取器
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 117
+      id: '1743671444449'
+      position:
+        x: 585.5390493500889
+        y: 217.43873852542993
+      positionAbsolute:
+        x: 585.5390493500889
+        y: 217.43873852542993
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - type: text
+            value: "{\n  \"pol\": \"上海\",\n  \"pod\": \"纽约\"\n}"
+          type: raw-text
+        desc: '查询港口基础资料接口
+
+          '
+        headers: 'accept:application/json
+
+          Content-Type:application/json'
+        method: POST
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: false
+          retry_interval: 982
+        selected: false
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 基础资料查询接口
+        type: http-request
+        url: http://192.168.67.135:8000/ports
+        variables: []
+      height: 137
+      id: '1743671737474'
+      position:
+        x: 878.0520658001185
+        y: -69.89013478763911
+      positionAbsolute:
+        x: 878.0520658001185
+        y: -69.89013478763911
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: '='
+            id: eff20784-861a-440b-8e07-39b2fdfef292
+            numberVarType: constant
+            value: '200'
+            varType: number
+            variable_selector:
+            - '1743671737474'
+            - status_code
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 125
+      id: '1743672862134'
+      position:
+        x: 895.0261754058567
+        y: 194.46477142548923
+      positionAbsolute:
+        x: 895.0261754058567
+        y: 194.46477142548923
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1743671737474.body#}}'
+        desc: ''
+        selected: false
+        title: 直接回复 2
+        type: answer
+        variables: []
+      height: 104
+      id: '1743674077541'
+      position:
+        x: 1243.9741096057382
+        y: 343.1673747154951
+      positionAbsolute:
+        x: 1243.9741096057382
+        y: 343.1673747154951
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - type: text
+            value: "{\n  \"pol_id\": \"818239\",\n  \"pod_id\": \"639954\"\n}"
+          type: raw-text
+        desc: 船期查询接口
+        headers: 'accept:application/json
+
+          Content-Type:application/json'
+        method: POST
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: false
+          retry_interval: 100
+        selected: false
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 船期查询接口
+        type: http-request
+        url: http://192.168.67.135:8000/ship_schedules
+        variables: []
+      height: 137
+      id: '1743674271615'
+      position:
+        x: 1255.6878902108838
+        y: 5.513158955827237
+      positionAbsolute:
+        x: 1255.6878902108838
+        y: 5.513158955827237
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1743674271615.body#}}'
+        desc: ''
+        selected: false
+        title: 直接回复 3
+        type: answer
+        variables: []
+      height: 104
+      id: '1743674299683'
+      position:
+        x: 1249.877619556658
+        y: 184.7101023353647
+      positionAbsolute:
+        x: 1249.877619556658
+        y: 184.7101023353647
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import json\n\ndef main(body) :\n\n    body = json.loads(body)\n  \
+          \  return {\n        \"pol_id\":body['pol']['port_id'],\n        \"pod_id\"\
+          :body['pod']['port_id']\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          pod_id:
+            children: null
+            type: string
+          pol_id:
+            children: null
+            type: string
+        selected: false
+        title: 代码执行
+        type: code
+        variables:
+        - value_selector:
+          - '1743671737474'
+          - body
+          variable: body
+      height: 53
+      id: '1743674441721'
+      position:
+        x: 1243.9741096057382
+        y: -93.27489957391776
+      positionAbsolute:
+        x: 1243.9741096057382
+        y: -93.27489957391776
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 61.71837947581406
+      y: 209.74010869475563
+      zoom: 0.7674697692240886

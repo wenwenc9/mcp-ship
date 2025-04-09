@@ -1,0 +1,255 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: MCP船期测试
+  use_icon_as_answer_icon: false
+dependencies: []
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: agent
+      id: 1744090862171-source-1744101894722-target
+      source: '1744090862171'
+      sourceHandle: source
+      target: '1744101894722'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: agent
+        targetType: answer
+      id: 1744101894722--1744102490141-target
+      source: '1744101894722'
+      sourceHandle: source
+      target: '1744102490141'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables: []
+      height: 53
+      id: '1744090862171'
+      position:
+        x: 30
+        y: 299
+      positionAbsolute:
+        x: 30
+        y: 299
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        agent_parameters:
+          instruction:
+            type: constant
+            value: "### **MCP协议助手提示**\n\n#### **角色**\n你是一个物流领域助手，负责根据用户需求，你能够通过MCP协议动态获取可用工具，并根据用户语义执行工具调用。\n\
+              \n#### **能力**\n1. **MCP工具调用**：能够使用MCP协议调用工具。\n2. **多工具调用**：在某些复杂场景下，可能需要连续调用多个工具（例如先查询港口基础资料，再调用船期查询接口）。\n\
+              \n#### **工作流程**\n1. **参数提取与工具选择**：提取用户语义关键参数，以便MCP工具需要传入。\n2. **工具选择**：\n\
+              \   - 如果需要查询船期，那么需要调用基础资料查询接口，然后再调用船期查询接口。\n\n\n#### **工具调用要求**\n1.\
+              \ **JSON序列化**：严格分析MCP工具中，每个工具接口请求的参数构建\n\n\n#### **多工具调用场景示例**\n1. **场景描述**：用户查询船期。\n\
+              2. **调用流程**：\n   - **第一步**：通过MCP协议调用港口基础资料接口。\n   - **第二步**：将基础资料接口构建post请求船期查询接口。\n\
+              \n"
+          maximum_iterations:
+            type: constant
+            value: 12
+          model:
+            type: constant
+            value:
+              completion_params: {}
+              mode: chat
+              model: Doubao-1.5-pro-32k
+              model_type: llm
+              provider: langgenius/volcengine_maas/volcengine_maas
+              type: model-selector
+          query:
+            type: constant
+            value: '{{#sys.query#}}'
+          tools:
+            type: constant
+            value:
+            - enabled: true
+              extra:
+                description: 获取MCP服务
+              parameters: {}
+              provider_name: junjiem/mcp_sse/mcp_sse
+              schemas: []
+              settings: {}
+              tool_label: 获取MCP工具列表
+              tool_name: mcp_sse_list_tools
+              type: builtin
+            - enabled: true
+              extra:
+                description: ''
+              parameters:
+                arguments:
+                  auto: 1
+                  value: null
+                tool_name:
+                  auto: 1
+                  value: null
+              provider_name: junjiem/mcp_sse/mcp_sse
+              schemas:
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: Name of the tool to execute.
+                  ja_JP: Name of the tool to execute.
+                  pt_BR: Name of the tool to execute.
+                  zh_Hans: 要执行的工具的名称。
+                label:
+                  en_US: Tool Name
+                  ja_JP: Tool Name
+                  pt_BR: Tool Name
+                  zh_Hans: 工具名称
+                llm_description: Name of the tool to execute.
+                max: null
+                min: null
+                name: tool_name
+                options: []
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: Tool arguments (JSON string in the python dict[str, Any]
+                    format).
+                  ja_JP: Tool arguments (JSON string in the python dict[str, Any]
+                    format).
+                  pt_BR: Tool arguments (JSON string in the python dict[str, Any]
+                    format).
+                  zh_Hans: 工具的参数。
+                label:
+                  en_US: Arguments
+                  ja_JP: Arguments
+                  pt_BR: Arguments
+                  zh_Hans: 参数
+                llm_description: Tool arguments (JSON string in the python dict[str,
+                  Any] format).
+                max: null
+                min: null
+                name: arguments
+                options: []
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: string
+              settings: {}
+              tool_label: 调用MCP工具
+              tool_name: mcp_sse_call_tool
+              type: builtin
+        agent_strategy_label: ReAct
+        agent_strategy_name: ReAct
+        agent_strategy_provider_name: langgenius/agent/agent
+        desc: ''
+        output_schema: null
+        plugin_unique_identifier: langgenius/agent:0.0.13@ba18395fd0d62459c9517ab4fa7d1b7b71f824b56468fc11cf506b7b21d5f66a
+        selected: false
+        title: Agent
+        type: agent
+      height: 197
+      id: '1744101894722'
+      position:
+        x: 330.4061191906994
+        y: 299
+      positionAbsolute:
+        x: 330.4061191906994
+        y: 299
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1744101894722.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 104
+      id: '1744102490141'
+      position:
+        x: 638
+        y: 299
+      positionAbsolute:
+        x: 638
+        y: 299
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 193.0217914688203
+      y: 106.79690632309985
+      zoom: 0.923655537541026
